@@ -13,7 +13,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 100%);
             color: #333;
             min-height: 100vh;
             display: flex;
@@ -32,7 +32,7 @@
         }
         
         .quiz-header {
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            background: linear-gradient(to right, #8A2BE2, #FF69B4);
             color: white;
             padding: 25px 30px;
             text-align: center;
@@ -49,61 +49,36 @@
         }
         
         .progress-container {
-            padding: 15px 30px;
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eaeaea;
+            background-color: #f0f0f0;
+            height: 8px;
+            width: 100%;
         }
         
         .progress-bar {
-            height: 8px;
-            background-color: #e0e0e0;
-            border-radius: 4px;
-            flex-grow: 1;
-            margin: 0 15px;
-            overflow: hidden;
-        }
-        
-        .progress {
             height: 100%;
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
-            width: 7%;
-            border-radius: 4px;
+            background: linear-gradient(to right, #8A2BE2, #FF69B4);
+            width: 6.67%; /* 1/15 of 100% */
             transition: width 0.3s ease;
         }
         
-        .question-count {
+        .question-counter {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
             font-weight: 600;
-            color: #4a00e0;
-            font-size: 14px;
-        }
-        
-        .quiz-body {
-            padding: 30px;
+            color: #8A2BE2;
+            border-bottom: 1px solid #eaeaea;
         }
         
         .question-container {
-            display: none;
-        }
-        
-        .question-container.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            padding: 30px;
         }
         
         .question-text {
             font-size: 22px;
-            font-weight: 600;
             margin-bottom: 25px;
-            line-height: 1.4;
             color: #2c3e50;
+            line-height: 1.4;
         }
         
         .options-container {
@@ -116,8 +91,8 @@
         .option {
             padding: 15px 20px;
             background-color: #f8f9fa;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
@@ -125,44 +100,31 @@
         }
         
         .option:hover {
-            background-color: #eef2ff;
-            border-color: #b8c1ec;
+            background-color: #f5f0fa;
+            border-color: #8A2BE2;
         }
         
         .option.selected {
-            background-color: #e3f2fd;
-            border-color: #4a00e0;
-            box-shadow: 0 4px 8px rgba(74, 0, 224, 0.1);
+            background-color: #f5f0fa;
+            border-color: #8A2BE2;
+            box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
         }
         
-        .option-letter {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 30px;
-            height: 30px;
-            background-color: #e0e0e0;
-            border-radius: 50%;
+        .option input {
             margin-right: 15px;
-            font-weight: bold;
-            color: #555;
-            flex-shrink: 0;
+            transform: scale(1.2);
         }
         
-        .option.selected .option-letter {
-            background-color: #4a00e0;
-            color: white;
-        }
-        
-        .option-text {
-            font-size: 16px;
-            line-height: 1.5;
+        .option label {
+            cursor: pointer;
+            font-size: 17px;
+            width: 100%;
         }
         
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            padding: 0 30px 30px;
         }
         
         .nav-btn {
@@ -185,90 +147,94 @@
         
         .prev-btn {
             background-color: #f8f9fa;
-            color: #4a00e0;
-            border: 2px solid #e0e0e0;
+            color: #8A2BE2;
+            border: 2px solid #8A2BE2;
         }
         
         .prev-btn:hover:not(:disabled) {
-            background-color: #eef2ff;
-            border-color: #4a00e0;
+            background-color: #f5f0fa;
         }
         
         .next-btn {
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            background: linear-gradient(to right, #8A2BE2, #FF69B4);
             color: white;
         }
         
         .next-btn:hover:not(:disabled) {
-            box-shadow: 0 5px 15px rgba(74, 0, 224, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
         }
         
         .submit-btn {
-            background: linear-gradient(to right, #00b09b, #96c93d);
+            background: linear-gradient(to right, #FF69B4, #8A2BE2);
             color: white;
         }
         
         .submit-btn:hover {
-            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.3);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
         }
         
         .results-container {
-            display: none;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
-            animation: fadeIn 0.5s ease;
+            display: none;
         }
         
         .results-header {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         .score-circle {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: conic-gradient(#4a00e0 0%, #e0e0e0 0%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 25px;
-            position: relative;
-        }
-        
-        .score-inner {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: white;
+            background: linear-gradient(135deg, #8A2BE2, #FF69B4);
+            color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
         }
         
-        .score-value {
-            font-size: 32px;
-            font-weight: 700;
-            color: #4a00e0;
+        .score-percent {
+            font-size: 36px;
+            font-weight: bold;
         }
         
         .score-text {
-            font-size: 14px;
-            color: #666;
+            font-size: 18px;
         }
         
-        .results-feedback {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #2c3e50;
+        .results-details {
+            text-align: left;
+            margin-top: 30px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .result-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+        
+        .result-item.correct {
+            border-left: 5px solid #8A2BE2;
+        }
+        
+        .result-item.incorrect {
+            border-left: 5px solid #FF69B4;
         }
         
         .restart-btn {
+            margin-top: 30px;
             padding: 12px 30px;
-            background: linear-gradient(to right, #4a00e0, #8e2de2);
+            background: linear-gradient(to right, #8A2BE2, #FF69B4);
             color: white;
             border: none;
             border-radius: 8px;
@@ -276,54 +242,11 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 15px;
         }
         
         .restart-btn:hover {
-            box-shadow: 0 5px 15px rgba(74, 0, 224, 0.3);
             transform: translateY(-2px);
-        }
-        
-        .answer-review {
-            margin-top: 30px;
-            text-align: left;
-        }
-        
-        .review-item {
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-        }
-        
-        .review-question {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-        
-        .review-answer {
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin: 5px 0;
-        }
-        
-        .correct-answer {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border-left: 4px solid #4caf50;
-        }
-        
-        .incorrect-answer {
-            background-color: #ffebee;
-            color: #c62828;
-            border-left: 4px solid #f44336;
-        }
-        
-        .user-answer {
-            background-color: #e3f2fd;
-            color: #1565c0;
-            border-left: 4px solid #2196f3;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
         }
         
         @media (max-width: 600px) {
@@ -335,13 +258,14 @@
                 font-size: 20px;
             }
             
-            .option {
-                padding: 12px 15px;
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
             }
             
             .nav-btn {
-                padding: 10px 20px;
-                font-size: 14px;
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -350,924 +274,306 @@
     <div class="quiz-container">
         <div class="quiz-header">
             <h1>Reproductive System Quiz</h1>
-            <p>Test your knowledge of human reproductive anatomy and physiology</p>
+            <p>Test your knowledge of male and female reproductive anatomy and physiology</p>
         </div>
         
         <div class="progress-container">
-            <div class="question-count">Question <span id="current-question">1</span> of 15</div>
-            <div class="progress-bar">
-                <div class="progress" id="progress-bar"></div>
-            </div>
-            <div class="question-count" id="progress-percent">7%</div>
+            <div class="progress-bar" id="progress-bar"></div>
         </div>
         
-        <div class="quiz-body">
-            <!-- Question 1 -->
-            <div class="question-container active" id="question-1">
-                <div class="question-text">1. What is the primary function of the scrotum?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">To produce testosterone</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">To store mature sperm</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">To provide temperature control for sperm production</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">To secrete seminal fluid</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" disabled>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-1">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
+        <div class="question-counter">
+            Question <span id="current-question">1</span> of 15
+        </div>
+        
+        <div class="question-container" id="question-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="navigation-buttons">
+            <button class="nav-btn prev-btn" id="prev-btn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Previous
+            </button>
+            <button class="nav-btn next-btn" id="next-btn">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="results-container" id="results-container">
+            <div class="results-header">
+                <h2>Quiz Results</h2>
             </div>
-            
-            <!-- Question 2 -->
-            <div class="question-container" id="question-2">
-                <div class="question-text">2. Where does sperm maturation and the development of motility primarily occur?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Seminiferous Tubules</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Vas Deferens</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Epididymis</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Prostate Gland</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-2">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-2">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
+            <div class="score-circle">
+                <div class="score-percent" id="score-percent">0%</div>
+                <div class="score-text" id="score-text">Score</div>
             </div>
-            
-            <!-- Question 3 -->
-            <div class="question-container" id="question-3">
-                <div class="question-text">3. Which male reproductive structure is responsible for producing the bulk of semen and contains fructose to aid sperm mobility?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Prostate Gland</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Bulbourethral Glands</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Seminal Vesicles</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Epididymis</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-3">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-3">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
+            <div class="results-details" id="results-details">
+                <!-- Results will be inserted here by JavaScript -->
             </div>
-            
-            <!-- Question 4 -->
-            <div class="question-container" id="question-4">
-                <div class="question-text">4. Where are oocytes produced in the female reproductive system?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Uterus</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Ovaries</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Uterine Tubes</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Vagina</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-4">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-4">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 5 -->
-            <div class="question-container" id="question-5">
-                <div class="question-text">5. Which part of the uterus is shed during menstruation?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Myometrium</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Perimetrium</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Functional layer of the Endometrium</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Basal layer of the Endometrium</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-5">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-5">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 6 -->
-            <div class="question-container" id="question-6">
-                <div class="question-text">6. What is the primary difference between mitosis and meiosis?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Mitosis produces haploid cells, meiosis produces diploid cells</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Mitosis produces 4 daughter cells, meiosis produces 2 daughter cells</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Mitosis produces identical daughter cells, meiosis produces genetically unique gametes</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Mitosis occurs only in reproductive cells, meiosis occurs in all body cells</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-6">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-6">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 7 -->
-            <div class="question-container" id="question-7">
-                <div class="question-text">7. What is the process called where spermatids develop into mature spermatozoa?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Spermatogenesis</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Spermiogenesis</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Oogenesis</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Gametogenesis</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-7">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-7">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 8 -->
-            <div class="question-container" id="question-8">
-                <div class="question-text">8. During oogenesis, when is meiosis II completed?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">During fetal development</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">At puberty</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">At ovulation</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Only if fertilization occurs</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-8">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-8">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 9 -->
-            <div class="question-container" id="question-9">
-                <div class="question-text">9. Which hormone is primarily responsible for the proliferative phase of the uterine cycle?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Progesterone</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Estrogen</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Testosterone</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">LH</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-9">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-9">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 10 -->
-            <div class="question-container" id="question-10">
-                <div class="question-text">10. Where does fertilization typically occur in the female reproductive system?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Uterus</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Ovary</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Vagina</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Uterine Tube</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-10">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-10">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 11 -->
-            <div class="question-container" id="question-11">
-                <div class="question-text">11. What is the name of the structure formed when the morula hollows out and fills with fluid?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Zygote</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Blastocyst</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Embryo</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Fetus</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-11">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-11">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 12 -->
-            <div class="question-container" id="question-12">
-                <div class="question-text">12. Which part of the blastocyst will eventually form the embryo?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Trophoblast</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Inner cell mass</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Blastocyst cavity</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Zona pellucida</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-12">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-12">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 13 -->
-            <div class="question-container" id="question-13">
-                <div class="question-text">13. Humans have how many pairs of autosomes?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">1</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">22</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">23</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">46</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-13">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-13">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 14 -->
-            <div class="question-container" id="question-14">
-                <div class="question-text">14. What is the term for an individual with two different alleles for a particular trait?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Homozygous</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Heterozygous</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Genotype</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Phenotype</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-14">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn next-btn" id="next-14">
-                        Next
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Question 15 -->
-            <div class="question-container" id="question-15">
-                <div class="question-text">15. Which type of inheritance is demonstrated by blood types, where both alleles are expressed equally?</div>
-                <div class="options-container">
-                    <div class="option" data-value="a">
-                        <span class="option-letter">A</span>
-                        <span class="option-text">Dominant-Recessive</span>
-                    </div>
-                    <div class="option" data-value="b">
-                        <span class="option-letter">B</span>
-                        <span class="option-text">Codominance</span>
-                    </div>
-                    <div class="option" data-value="c">
-                        <span class="option-letter">C</span>
-                        <span class="option-text">Incomplete Dominance</span>
-                    </div>
-                    <div class="option" data-value="d">
-                        <span class="option-letter">D</span>
-                        <span class="option-text">Sex-linked</span>
-                    </div>
-                </div>
-                <div class="navigation-buttons">
-                    <button class="nav-btn prev-btn" id="prev-15">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        Previous
-                    </button>
-                    <button class="nav-btn submit-btn" id="submit-btn">
-                        Submit Quiz
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Results Section -->
-            <div class="results-container" id="results-container">
-                <div class="results-header">
-                    <h2>Quiz Completed!</h2>
-                    <p>Here's how you performed:</p>
-                </div>
-                
-                <div class="score-circle" id="score-circle">
-                    <div class="score-inner">
-                        <div class="score-value" id="score-value">0/15</div>
-                        <div class="score-text">Your Score</div>
-                    </div>
-                </div>
-                
-                <div class="results-feedback" id="results-feedback">
-                    Keep studying to improve your knowledge!
-                </div>
-                
-                <button class="restart-btn" id="restart-btn">Take Quiz Again</button>
-                
-                <div class="answer-review" id="answer-review">
-                    <!-- Answer review will be populated here -->
-                </div>
-            </div>
+            <button class="restart-btn" id="restart-btn">Take Quiz Again</button>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Quiz state
-            const state = {
-                currentQuestion: 1,
-                totalQuestions: 15,
-                answers: {},
-                correctAnswers: {
-                    1: "c",
-                    2: "c",
-                    3: "c",
-                    4: "b",
-                    5: "c",
-                    6: "c",
-                    7: "b",
-                    8: "d",
-                    9: "b",
-                    10: "d",
-                    11: "b",
-                    12: "b",
-                    13: "b",
-                    14: "b",
-                    15: "b"
+            // Quiz questions and answers
+            const quizData = [
+                {
+                    question: "Which of the following is NOT an external structure of the male reproductive system?",
+                    options: ["Scrotum", "Testes", "Penis", "Prostate gland"],
+                    correct: 3
                 },
-                questionTexts: {
-                    1: "What is the primary function of the scrotum?",
-                    2: "Where does sperm maturation and the development of motility primarily occur?",
-                    3: "Which male reproductive structure is responsible for producing the bulk of semen and contains fructose to aid sperm mobility?",
-                    4: "Where are oocytes produced in the female reproductive system?",
-                    5: "Which part of the uterus is shed during menstruation?",
-                    6: "What is the primary difference between mitosis and meiosis?",
-                    7: "What is the process called where spermatids develop into mature spermatozoa?",
-                    8: "During oogenesis, when is meiosis II completed?",
-                    9: "Which hormone is primarily responsible for the proliferative phase of the uterine cycle?",
-                    10: "Where does fertilization typically occur in the female reproductive system?",
-                    11: "What is the name of the structure formed when the morula hollows out and fills with fluid?",
-                    12: "Which part of the blastocyst will eventually form the embryo?",
-                    13: "Humans have how many pairs of autosomes?",
-                    14: "What is the term for an individual with two different alleles for a particular trait?",
-                    15: "Which type of inheritance is demonstrated by blood types, where both alleles are expressed equally?"
+                {
+                    question: "What is the primary function of the scrotum?",
+                    options: ["Produce testosterone", "Temperature control for sperm production", "Store mature sperm", "Produce seminal fluid"],
+                    correct: 1
                 },
-                options: {
-                    1: {
-                        a: "To produce testosterone",
-                        b: "To store mature sperm",
-                        c: "To provide temperature control for sperm production",
-                        d: "To secrete seminal fluid"
-                    },
-                    2: {
-                        a: "Seminiferous Tubules",
-                        b: "Vas Deferens",
-                        c: "Epididymis",
-                        d: "Prostate Gland"
-                    },
-                    3: {
-                        a: "Prostate Gland",
-                        b: "Bulbourethral Glands",
-                        c: "Seminal Vesicles",
-                        d: "Epididymis"
-                    },
-                    4: {
-                        a: "Uterus",
-                        b: "Ovaries",
-                        c: "Uterine Tubes",
-                        d: "Vagina"
-                    },
-                    5: {
-                        a: "Myometrium",
-                        b: "Perimetrium",
-                        c: "Functional layer of the Endometrium",
-                        d: "Basal layer of the Endometrium"
-                    },
-                    6: {
-                        a: "Mitosis produces haploid cells, meiosis produces diploid cells",
-                        b: "Mitosis produces 4 daughter cells, meiosis produces 2 daughter cells",
-                        c: "Mitosis produces identical daughter cells, meiosis produces genetically unique gametes",
-                        d: "Mitosis occurs only in reproductive cells, meiosis occurs in all body cells"
-                    },
-                    7: {
-                        a: "Spermatogenesis",
-                        b: "Spermiogenesis",
-                        c: "Oogenesis",
-                        d: "Gametogenesis"
-                    },
-                    8: {
-                        a: "During fetal development",
-                        b: "At puberty",
-                        c: "At ovulation",
-                        d: "Only if fertilization occurs"
-                    },
-                    9: {
-                        a: "Progesterone",
-                        b: "Estrogen",
-                        c: "Testosterone",
-                        d: "LH"
-                    },
-                    10: {
-                        a: "Uterus",
-                        b: "Ovary",
-                        c: "Vagina",
-                        d: "Uterine Tube"
-                    },
-                    11: {
-                        a: "Zygote",
-                        b: "Blastocyst",
-                        c: "Embryo",
-                        d: "Fetus"
-                    },
-                    12: {
-                        a: "Trophoblast",
-                        b: "Inner cell mass",
-                        c: "Blastocyst cavity",
-                        d: "Zona pellucida"
-                    },
-                    13: {
-                        a: "1",
-                        b: "22",
-                        c: "23",
-                        d: "46"
-                    },
-                    14: {
-                        a: "Homozygous",
-                        b: "Heterozygous",
-                        c: "Genotype",
-                        d: "Phenotype"
-                    },
-                    15: {
-                        a: "Dominant-Recessive",
-                        b: "Codominance",
-                        c: "Incomplete Dominance",
-                        d: "Sex-linked"
-                    }
+                {
+                    question: "Which part of the male reproductive system is responsible for producing the bulk of semen?",
+                    options: ["Testes", "Epididymis", "Accessory glands", "Vas deferens"],
+                    correct: 2
+                },
+                {
+                    question: "Where does sperm maturation occur?",
+                    options: ["Testes", "Epididymis", "Vas deferens", "Seminal vesicles"],
+                    correct: 1
+                },
+                {
+                    question: "Which female reproductive structure produces oestrogen and progesterone?",
+                    options: ["Uterus", "Ovaries", "Uterine tubes", "Vagina"],
+                    correct: 1
+                },
+                {
+                    question: "What is the function of the fimbriae in the female reproductive system?",
+                    options: ["Produce hormones", "Receive the ovulated oocyte", "Implant the fertilized egg", "Protect the uterus"],
+                    correct: 1
+                },
+                {
+                    question: "Which layer of the uterus is shed during menstruation?",
+                    options: ["Perimetrium", "Myometrium", "Endometrium", "Basal layer"],
+                    correct: 2
+                },
+                {
+                    question: "What is the primary difference between mitosis and meiosis?",
+                    options: ["Mitosis produces haploid cells", "Meiosis produces identical daughter cells", "Meiosis reduces chromosome number by half", "Mitosis involves two cell divisions"],
+                    correct: 2
+                },
+                {
+                    question: "Where does spermatogenesis occur?",
+                    options: ["Epididymis", "Vas deferens", "Seminiferous tubules", "Prostate gland"],
+                    correct: 2
+                },
+                {
+                    question: "What is the final product of oogenesis?",
+                    options: ["Four functional ova", "One ovum and three polar bodies", "Two ova and two polar bodies", "Four polar bodies"],
+                    correct: 1
+                },
+                {
+                    question: "During which phase of the ovarian cycle does ovulation occur?",
+                    options: ["Follicular phase", "Luteal phase", "Menstrual phase", "Proliferative phase"],
+                    correct: 0
+                },
+                {
+                    question: "Where does fertilization typically occur?",
+                    options: ["Ovary", "Uterus", "Vagina", "Uterine tube"],
+                    correct: 3
+                },
+                {
+                    question: "What structure develops from the trophoblast after implantation?",
+                    options: ["Embryo", "Placenta", "Amniotic sac", "Umbilical cord"],
+                    correct: 1
+                },
+                {
+                    question: "Which hormone is primarily responsible for milk production?",
+                    options: ["Oxytocin", "Prolactin", "Estrogen", "Progesterone"],
+                    correct: 1
+                },
+                {
+                    question: "In genetics, what term describes an individual with two different alleles for a trait?",
+                    options: ["Homozygous", "Heterozygous", "Dominant", "Recessive"],
+                    correct: 1
                 }
-            };
+            ];
 
             // DOM elements
+            const questionContainer = document.getElementById('question-container');
+            const progressBar = document.getElementById('progress-bar');
             const currentQuestionEl = document.getElementById('current-question');
-            const progressBarEl = document.getElementById('progress-bar');
-            const progressPercentEl = document.getElementById('progress-percent');
-            const questionContainers = document.querySelectorAll('.question-container');
-            const options = document.querySelectorAll('.option');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
             const resultsContainer = document.getElementById('results-container');
-            const scoreValueEl = document.getElementById('score-value');
-            const scoreCircleEl = document.getElementById('score-circle');
-            const resultsFeedbackEl = document.getElementById('results-feedback');
-            const answerReviewEl = document.getElementById('answer-review');
+            const scorePercent = document.getElementById('score-percent');
+            const scoreText = document.getElementById('score-text');
+            const resultsDetails = document.getElementById('results-details');
             const restartBtn = document.getElementById('restart-btn');
 
+            // Quiz state
+            let currentQuestion = 0;
+            let userAnswers = new Array(quizData.length).fill(null);
+            let quizCompleted = false;
+
             // Initialize quiz
-            updateProgress();
-            setupEventListeners();
-
-            function setupEventListeners() {
-                // Event listeners for options
-                options.forEach(option => {
-                    option.addEventListener('click', function() {
-                        const questionId = parseInt(this.closest('.question-container').id.split('-')[1]);
-                        const value = this.getAttribute('data-value');
-                        
-                        // Remove selected class from all options in this question
-                        const optionsInQuestion = this.parentElement.querySelectorAll('.option');
-                        optionsInQuestion.forEach(opt => opt.classList.remove('selected'));
-                        
-                        // Add selected class to clicked option
-                        this.classList.add('selected');
-                        
-                        // Save answer
-                        state.answers[questionId] = value;
-                    });
-                });
-
-                // Event listeners for navigation buttons
-                for (let i = 1; i <= state.totalQuestions; i++) {
-                    // Next buttons
-                    const nextBtn = document.getElementById(`next-${i}`);
-                    if (nextBtn) {
-                        nextBtn.addEventListener('click', function() {
-                            goToNextQuestion();
-                        });
-                    }
-                    
-                    // Previous buttons
-                    const prevBtn = document.getElementById(`prev-${i}`);
-                    if (prevBtn) {
-                        prevBtn.addEventListener('click', function() {
-                            goToPreviousQuestion();
-                        });
-                    }
-                }
-
-                // Submit button
-                const submitBtn = document.getElementById('submit-btn');
-                if (submitBtn) {
-                    submitBtn.addEventListener('click', function() {
-                        showResults();
-                    });
-                }
-
-                // Restart button
-                restartBtn.addEventListener('click', restartQuiz);
+            function initQuiz() {
+                showQuestion(currentQuestion);
+                updateProgressBar();
+                updateNavigationButtons();
             }
 
-            // Navigation functions
-            function goToPreviousQuestion() {
-                if (state.currentQuestion > 1) {
-                    state.currentQuestion--;
-                    showQuestion(state.currentQuestion);
-                    updateProgress();
-                }
-            }
-
-            function goToNextQuestion() {
-                if (state.currentQuestion < state.totalQuestions) {
-                    state.currentQuestion++;
-                    showQuestion(state.currentQuestion);
-                    updateProgress();
-                }
-            }
-
-            function showQuestion(questionNumber) {
-                // Hide all questions
-                questionContainers.forEach(container => {
-                    container.classList.remove('active');
-                });
+            // Display current question
+            function showQuestion(index) {
+                const question = quizData[index];
+                currentQuestionEl.textContent = index + 1;
                 
-                // Show the current question
-                const currentQuestionContainer = document.getElementById(`question-${questionNumber}`);
-                if (currentQuestionContainer) {
-                    currentQuestionContainer.classList.add('active');
-                    
-                    // Restore selected option if any
-                    const selectedOption = state.answers[questionNumber];
-                    if (selectedOption) {
-                        const optionsInQuestion = currentQuestionContainer.querySelectorAll('.option');
-                        optionsInQuestion.forEach(option => {
-                            if (option.getAttribute('data-value') === selectedOption) {
-                                option.classList.add('selected');
-                            }
-                        });
-                    }
-                }
-            }
-
-            function updateProgress() {
-                const progressPercentage = (state.currentQuestion / state.totalQuestions) * 100;
-                progressBarEl.style.width = `${progressPercentage}%`;
-                progressPercentEl.textContent = `${Math.round(progressPercentage)}%`;
-                currentQuestionEl.textContent = state.currentQuestion;
-            }
-
-            function showResults() {
-                // Hide quiz body
-                document.querySelector('.quiz-body').style.display = 'none';
-                
-                // Show results container
-                resultsContainer.style.display = 'block';
-                
-                // Calculate score
-                let score = 0;
-                for (let i = 1; i <= state.totalQuestions; i++) {
-                    if (state.answers[i] === state.correctAnswers[i]) {
-                        score++;
-                    }
-                }
-                
-                // Update score display
-                scoreValueEl.textContent = `${score}/${state.totalQuestions}`;
-                
-                // Update score circle with animation
-                const percentage = (score / state.totalQuestions) * 100;
-                scoreCircleEl.style.background = `conic-gradient(#4a00e0 ${percentage}%, #e0e0e0 ${percentage}%)`;
-                
-                // Set feedback message
-                if (percentage >= 80) {
-                    resultsFeedbackEl.textContent = "Excellent! You have a strong understanding of the reproductive system.";
-                } else if (percentage >= 60) {
-                    resultsFeedbackEl.textContent = "Good job! You have a solid foundation but could use some review.";
-                } else {
-                    resultsFeedbackEl.textContent = "Keep studying! Review the material and try again.";
-                }
-                
-                // Generate answer review
-                generateAnswerReview(score);
-            }
-
-            function generateAnswerReview(score) {
-                let reviewHTML = '<h3>Answer Review</h3>';
-                
-                for (let i = 1; i <= state.totalQuestions; i++) {
-                    const userAnswer = state.answers[i];
-                    const correctAnswer = state.correctAnswers[i];
-                    const isCorrect = userAnswer === correctAnswer;
-                    
-                    reviewHTML += `
-                        <div class="review-item">
-                            <div class="review-question">${i}. ${state.questionTexts[i]}</div>
-                            <div class="review-answer ${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
-                                <strong>Correct Answer:</strong> ${String.fromCharCode(64 + parseInt(correctAnswer))}. ${state.options[i][correctAnswer]}
-                            </div>
-                            ${!isCorrect && userAnswer ? `
-                                <div class="review-answer user-answer">
-                                    <strong>Your Answer:</strong> ${String.fromCharCode(64 + parseInt(userAnswer))}. ${state.options[i][userAnswer]}
-                                </div>
-                            ` : ''}
+                let optionsHTML = '';
+                question.options.forEach((option, i) => {
+                    const isSelected = userAnswers[index] === i;
+                    optionsHTML += `
+                        <div class="option ${isSelected ? 'selected' : ''}" data-index="${i}">
+                            <input type="radio" id="option-${i}" name="option" ${isSelected ? 'checked' : ''}>
+                            <label for="option-${i}">${option}</label>
                         </div>
                     `;
-                }
+                });
                 
-                answerReviewEl.innerHTML = reviewHTML;
+                questionContainer.innerHTML = `
+                    <div class="question-text">${question.question}</div>
+                    <div class="options-container">
+                        ${optionsHTML}
+                    </div>
+                `;
+                
+                // Add event listeners to options
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const selectedIndex = parseInt(this.getAttribute('data-index'));
+                        userAnswers[currentQuestion] = selectedIndex;
+                        
+                        // Update UI
+                        document.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        document.querySelector(`#option-${selectedIndex}`).checked = true;
+                        
+                        updateNavigationButtons();
+                    });
+                });
             }
 
-            function restartQuiz() {
-                // Reset state
-                state.currentQuestion = 1;
-                state.answers = {};
+            // Update progress bar
+            function updateProgressBar() {
+                const progress = ((currentQuestion + 1) / quizData.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // Update navigation buttons state
+            function updateNavigationButtons() {
+                prevBtn.disabled = currentQuestion === 0;
                 
-                // Show quiz body, hide results
-                document.querySelector('.quiz-body').style.display = 'block';
-                resultsContainer.style.display = 'none';
+                if (currentQuestion === quizData.length - 1) {
+                    nextBtn.textContent = 'Submit';
+                    nextBtn.classList.add('submit-btn');
+                    nextBtn.classList.remove('next-btn');
+                } else {
+                    nextBtn.textContent = 'Next';
+                    nextBtn.classList.add('next-btn');
+                    nextBtn.classList.remove('submit-btn');
+                }
+                
+                // Enable next button if current question is answered
+                if (userAnswers[currentQuestion] !== null) {
+                    nextBtn.disabled = false;
+                } else {
+                    nextBtn.disabled = true;
+                }
+            }
+
+            // Navigate to next question
+            function nextQuestion() {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgressBar();
+                    updateNavigationButtons();
+                } else {
+                    // Submit quiz
+                    submitQuiz();
+                }
+            }
+
+            // Navigate to previous question
+            function prevQuestion() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgressBar();
+                    updateNavigationButtons();
+                }
+            }
+
+            // Calculate and display results
+            function submitQuiz() {
+                let score = 0;
+                let resultsHTML = '';
+                
+                quizData.forEach((question, index) => {
+                    const userAnswer = userAnswers[index];
+                    const isCorrect = userAnswer === question.correct;
+                    
+                    if (isCorrect) {
+                        score++;
+                    }
+                    
+                    resultsHTML += `
+                        <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
+                            <strong>Question ${index + 1}:</strong> ${question.question}<br>
+                            <strong>Your answer:</strong> ${userAnswer !== null ? question.options[userAnswer] : 'Not answered'}<br>
+                            <strong>Correct answer:</strong> ${question.options[question.correct]}
+                        </div>
+                    `;
+                });
+                
+                const percentage = Math.round((score / quizData.length) * 100);
+                scorePercent.textContent = `${percentage}%`;
+                scoreText.textContent = `${score}/${quizData.length} Correct`;
+                resultsDetails.innerHTML = resultsHTML;
+                
+                // Show results container
+                document.querySelector('.question-counter').style.display = 'none';
+                document.querySelector('.question-container').style.display = 'none';
+                document.querySelector('.navigation-buttons').style.display = 'none';
+                resultsContainer.style.display = 'block';
+                
+                quizCompleted = true;
+            }
+
+            // Restart quiz
+            function restartQuiz() {
+                currentQuestion = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                quizCompleted = false;
                 
                 // Reset UI
-                showQuestion(1);
-                updateProgress();
+                document.querySelector('.question-counter').style.display = 'block';
+                document.querySelector('.question-container').style.display = 'block';
+                document.querySelector('.navigation-buttons').style.display = 'flex';
+                resultsContainer.style.display = 'none';
                 
-                // Clear all selected options
-                options.forEach(option => option.classList.remove('selected'));
+                initQuiz();
             }
+
+            // Event listeners
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            restartBtn.addEventListener('click', restartQuiz);
+
+            // Initialize the quiz
+            initQuiz();
         });
     </script>
 </body>
