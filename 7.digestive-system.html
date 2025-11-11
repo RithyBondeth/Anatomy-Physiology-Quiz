@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digestive System Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffebcc 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #cc6600, #ff9933);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background-color: #fff5e6;
+            padding: 20px;
+            border-bottom: 1px solid #ffddb3;
+        }
+        
+        .instructions h3 {
+            color: #cc6600;
+            margin-bottom: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .progress-container {
+            padding: 15px 20px;
+            background-color: #ffe6cc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ffcc99;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #ffcc99;
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #cc6600, #ff9933);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .quiz-content {
+            padding: 25px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question-number {
+            font-size: 14px;
+            color: #cc6600;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #ffddb3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #fff5e6;
+            border-color: #ff9933;
+        }
+        
+        .option.selected {
+            background-color: #fff0d9;
+            border-color: #ff9933;
+        }
+        
+        .option.correct {
+            background-color: #e6ffe6;
+            border-color: #33cc33;
+        }
+        
+        .option.incorrect {
+            background-color: #ffe6e6;
+            border-color: #ff3333;
+        }
+        
+        .option-label {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #ffe6cc;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-label {
+            background-color: #ff9933;
+            color: white;
+        }
+        
+        .option.correct .option-label {
+            background-color: #33cc33;
+            color: white;
+        }
+        
+        .option.incorrect .option-label {
+            background-color: #ff3333;
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e6ffe6;
+            border-left: 4px solid #33cc33;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffe6e6;
+            border-left: 4px solid #ff3333;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-prev {
+            background-color: #ffe6cc;
+            color: #333;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background-color: #ffddb3;
+        }
+        
+        .btn-next {
+            background-color: #cc6600;
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            background-color: #b35900;
+        }
+        
+        .btn-submit {
+            background-color: #009933;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #007a29;
+        }
+        
+        .results {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 72px;
+            font-weight: bold;
+            color: #cc6600;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .results-message {
+            background-color: #fff5e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .restart-btn {
+            background-color: #cc6600;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .restart-btn:hover {
+            background-color: #b35900;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .quiz-content {
+                padding: 15px;
+            }
+            
+            .question-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Digestive System Quiz</h1>
+            <p class="subtitle">Test your knowledge of gastrointestinal anatomy and physiology</p>
+        </header>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>• This quiz contains 15 multiple-choice questions about the digestive system.</p>
+            <p>• Select one answer for each question and use the navigation buttons to move between questions.</p>
+            <p>• After completing all questions, click "Submit Quiz" to see your results.</p>
+        </div>
+        
+        <div class="progress-container">
+            <span id="progress-text">Question 1 of 15</span>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span id="score-text">Score: 0/15</span>
+        </div>
+        
+        <div class="quiz-content">
+            <!-- Question 1 -->
+            <div class="question active" id="q1">
+                <div class="question-number">Question 1 of 15</div>
+                <div class="question-text">Which of the following is NOT one of the four basic tissue layers of the alimentary canal?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Mucosa</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Submucosa</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Muscularis externa</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Peritoneum</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q1">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The four basic tissue layers of the alimentary canal are mucosa, submucosa, muscularis externa, and serosa/adventitia. The peritoneum is a serous membrane that lines the abdominal cavity and covers digestive organs but is not one of the four layers of the alimentary canal wall.</div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question" id="q2">
+                <div class="question-number">Question 2 of 15</div>
+                <div class="question-text">Which structure anchors digestive organs to the body wall and stores fat?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Peritoneal cavity</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Mesentery</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Greater omentum</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Visceral peritoneum</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q2">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The mesentery is a double layer of peritoneum that anchors digestive organs to the body wall and contains blood vessels, nerves, and lymphatic vessels. It also stores fat.</div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question" id="q3">
+                <div class="question-number">Question 3 of 15</div>
+                <div class="question-text">Which part of the stomach controls the emptying of chyme into the duodenum?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Cardioesophageal sphincter</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Pyloric sphincter</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Ileocecal valve</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Gastroesophageal sphincter</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q3">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The pyloric sphincter controls the emptying of chyme from the stomach into the duodenum. It regulates the passage of partially digested food from the stomach to the small intestine.</div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question" id="q4">
+                <div class="question-number">Question 4 of 15</div>
+                <div class="question-text">What is the primary function of the small intestine?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Mechanical digestion of food</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Nutrient absorption</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Water absorption</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Storage of food</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q4">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The primary function of the small intestine is nutrient absorption. It is specially adapted with plicae circulares, villi, and microvilli to maximize surface area for absorption of digested nutrients.</div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question" id="q5">
+                <div class="question-number">Question 5 of 15</div>
+                <div class="question-text">Which of the following is NOT one of the main salivary glands?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Parotid gland</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Submandibular gland</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Sublingual gland</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Thyroid gland</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q5">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The three main salivary glands are the parotid, submandibular, and sublingual glands. The thyroid gland is an endocrine gland located in the neck and is not part of the digestive system.</div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question" id="q6">
+                <div class="question-number">Question 6 of 15</div>
+                <div class="question-text">What is the function of bile in the digestive process?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Emulsification of fats</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Digestion of proteins</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Digestion of carbohydrates</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Neutralization of stomach acid</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q6">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Bile functions in the emulsification of fats, breaking large fat globules into smaller droplets. This increases the surface area for lipase enzymes to act on the fats, facilitating their digestion.</div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question" id="q7">
+                <div class="question-number">Question 7 of 15</div>
+                <div class="question-text">Which pancreatic enzyme is responsible for protein digestion?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Amylase</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Lipase</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Trypsin</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Nuclease</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q7">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Trypsin is a pancreatic enzyme responsible for protein digestion. It breaks down proteins into smaller peptides in the small intestine.</div>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question" id="q8">
+                <div class="question-number">Question 8 of 15</div>
+                <div class="question-text">What is the name of the rhythmic, alternating contractions that move food through the digestive tract?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Segmentation</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Peristalsis</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Mastication</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Deglutition</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q8">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Peristalsis is the rhythmic, alternating waves of contraction and relaxation of smooth muscle that propel food through the digestive tract.</div>
+                </div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question" id="q9">
+                <div class="question-number">Question 9 of 15</div>
+                <div class="question-text">Which part of the large intestine is a small, finger-like projection that contains lymphoid tissue?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Cecum</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Vermiform appendix</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Haustrum</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Sigmoid colon</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q9">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The vermiform appendix is a small, finger-like projection extending from the cecum that contains lymphoid tissue and may play a role in immune function.</div>
+                </div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question" id="q10">
+                <div class="question-number">Question 10 of 15</div>
+                <div class="question-text">What is the term for the process of swallowing?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Mastication</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Deglutition</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Peristalsis</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Segmentation</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q10">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Deglutition is the medical term for swallowing. It involves the coordinated activity of the tongue, palate, pharynx, and esophagus to move food from the mouth to the stomach.</div>
+                </div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="question" id="q11">
+                <div class="question-number">Question 11 of 15</div>
+                <div class="question-text">Which cells in the stomach secrete hydrochloric acid (HCl)?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Chief cells</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Parietal cells</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Mucous cells</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">G cells</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q11">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Parietal cells in the gastric glands of the stomach secrete hydrochloric acid (HCl), which creates the highly acidic environment necessary for protein digestion and kills microorganisms.</div>
+                </div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="question" id="q12">
+                <div class="question-number">Question 12 of 15</div>
+                <div class="question-text">What is the primary function of the large intestine?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Nutrient absorption</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Water absorption and feces formation</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Protein digestion</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Fat emulsification</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q12">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The primary functions of the large intestine are water absorption and feces formation. It absorbs water and electrolytes from the remaining indigestible food matter, forming solid feces for elimination.</div>
+                </div>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="question" id="q13">
+                <div class="question-number">Question 13 of 15</div>
+                <div class="question-text">Which structure prevents food from entering the trachea during swallowing?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Uvula</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Epiglottis</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Tongue</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Soft palate</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q13">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The epiglottis is a flap of elastic cartilage that covers the opening to the trachea (glottis) during swallowing, preventing food and liquid from entering the respiratory tract.</div>
+                </div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question" id="q14">
+                <div class="question-number">Question 14 of 15</div>
+                <div class="question-text">What is the name of the folds in the stomach lining that allow for expansion?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Villi</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Microvilli</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Rugae</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Plicae circulares</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q14">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Rugae are the longitudinal folds in the stomach lining that allow the stomach to expand when filled with food. When the stomach is empty, the rugae are prominent, but they flatten out as the stomach fills.</div>
+                </div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question" id="q15">
+                <div class="question-number">Question 15 of 15</div>
+                <div class="question-text">Which of the following is NOT an accessory digestive organ?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Liver</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Pancreas</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Gallbladder</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Stomach</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q15">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The stomach is part of the alimentary canal (GI tract), not an accessory digestive organ. Accessory digestive organs include the teeth, tongue, salivary glands, liver, gallbladder, and pancreas, which contribute to digestion but are not part of the food tube itself.</div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn-prev" id="prev-btn" disabled>Previous</button>
+                <button class="btn-next" id="next-btn">Next Question</button>
+                <button class="btn-submit" id="submit-btn" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/15</div>
+            <div class="score-text" id="score-text-message">Your Score</div>
+            <div class="results-message" id="results-message">
+                <!-- Results message will be inserted here -->
+            </div>
+            <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz configuration
+            const totalQuestions = 15;
+            let currentQuestion = 1;
+            let userAnswers = {};
+            let score = 0;
+            
+            // Correct answers
+            const correctAnswers = {
+                q1: 'd',
+                q2: 'b',
+                q3: 'b',
+                q4: 'b',
+                q5: 'd',
+                q6: 'a',
+                q7: 'c',
+                q8: 'b',
+                q9: 'b',
+                q10: 'b',
+                q11: 'b',
+                q12: 'b',
+                q13: 'b',
+                q14: 'c',
+                q15: 'd'
+            };
+            
+            // DOM elements
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress');
+            const scoreText = document.getElementById('score-text');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultsDiv = document.getElementById('results');
+            const finalScore = document.getElementById('final-score');
+            const resultsMessage = document.getElementById('results-message');
+            const scoreTextMessage = document.getElementById('score-text-message');
+            
+            // Initialize quiz
+            updateProgress();
+            
+            // Option selection
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const question = this.closest('.question');
+                    const questionId = question.id;
+                    const selectedValue = this.getAttribute('data-value');
+                    
+                    // Remove selected class from all options in this question
+                    question.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store user's answer
+                    userAnswers[questionId] = selectedValue;
+                    
+                    // Hide any previous feedback
+                    const feedback = question.querySelector('.feedback');
+                    feedback.style.display = 'none';
+                    
+                    // Enable navigation if on last question
+                    if (currentQuestion === totalQuestions) {
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 1) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Submit button
+            submitBtn.addEventListener('click', function() {
+                calculateScore();
+                showResults();
+            });
+            
+            // Restart button
+            restartBtn.addEventListener('click', function() {
+                resetQuiz();
+            });
+            
+            // Function to show a specific question
+            function showQuestion(questionNum) {
+                // Hide all questions
+                document.querySelectorAll('.question').forEach(question => {
+                    question.classList.remove('active');
+                });
+                
+                // Show the current question
+                document.getElementById(`q${questionNum}`).classList.add('active');
+                
+                // Update button states
+                prevBtn.disabled = (questionNum === 1);
+                
+                if (questionNum === totalQuestions) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                    submitBtn.disabled = !userAnswers[`q${questionNum}`];
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+            }
+            
+            // Function to update progress
+            function updateProgress() {
+                const progressPercent = (currentQuestion / totalQuestions) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                progressText.textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+                
+                // Calculate current score based on answered questions
+                let currentScore = 0;
+                for (let i = 1; i <= currentQuestion; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        currentScore++;
+                    }
+                }
+                scoreText.textContent = `Score: ${currentScore}/${currentQuestion}`;
+            }
+            
+            // Function to calculate final score
+            function calculateScore() {
+                score = 0;
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        score++;
+                    }
+                }
+            }
+            
+            // Function to show results
+            function showResults() {
+                document.querySelector('.quiz-content').style.display = 'none';
+                resultsDiv.style.display = 'block';
+                
+                finalScore.textContent = `${score}/${totalQuestions}`;
+                
+                // Set results message based on score
+                let message = '';
+                if (score === totalQuestions) {
+                    message = '<p>Excellent! You have a perfect understanding of the digestive system.</p>';
+                    scoreTextMessage.textContent = 'Perfect Score!';
+                } else if (score >= totalQuestions * 0.8) {
+                    message = '<p>Great job! You have a strong understanding of the digestive system.</p>';
+                    scoreTextMessage.textContent = 'Great Score!';
+                } else if (score >= totalQuestions * 0.6) {
+                    message = '<p>Good effort! You have a decent understanding but could benefit from reviewing some concepts.</p>';
+                    scoreTextMessage.textContent = 'Good Score';
+                } else {
+                    message = '<p>You may need to review the material more thoroughly to improve your understanding of the digestive system.</p>';
+                    scoreTextMessage.textContent = 'Keep Studying';
+                }
+                
+                // Add performance details
+                message += `<p>You answered ${score} out of ${totalQuestions} questions correctly.</p>`;
+                
+                // Add review suggestions for incorrect answers
+                const incorrectQuestions = [];
+                for (let i = 1; i <= totalQuestions; i++) {
+                    if (userAnswers[`q${i}`] !== correctAnswers[`q${i}`]) {
+                        incorrectQuestions.push(i);
+                    }
+                }
+                
+                if (incorrectQuestions.length > 0) {
+                    message += `<p>Consider reviewing questions: ${incorrectQuestions.join(', ')}</p>`;
+                }
+                
+                resultsMessage.innerHTML = message;
+            }
+            
+            // Function to reset the quiz
+            function resetQuiz() {
+                currentQuestion = 1;
+                userAnswers = {};
+                score = 0;
+                
+                // Reset UI
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                document.querySelectorAll('.feedback').forEach(feedback => {
+                    feedback.style.display = 'none';
+                });
+                
+                document.querySelector('.quiz-content').style.display = 'block';
+                resultsDiv.style.display = 'none';
+                
+                showQuestion(1);
+                updateProgress();
+            }
+        });
+    </script>
+</body>
+</html>

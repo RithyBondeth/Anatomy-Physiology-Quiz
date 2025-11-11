@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endocrine System Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        
+        .quiz-header {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        .quiz-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .quiz-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .progress-container {
+            background-color: #f0f0f0;
+            height: 8px;
+            width: 100%;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            width: 6.67%; /* 1/15 of 100% */
+            transition: width 0.3s ease;
+        }
+        
+        .question-counter {
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #11998e;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .question-container {
+            padding: 30px;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border: 2px solid #eaeaea;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #e8f5e9;
+            border-color: #11998e;
+        }
+        
+        .option.selected {
+            background-color: #e8f5e9;
+            border-color: #11998e;
+            box-shadow: 0 0 0 2px rgba(17, 153, 142, 0.2);
+        }
+        
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+        
+        .option label {
+            cursor: pointer;
+            font-size: 17px;
+            width: 100%;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .prev-btn {
+            background-color: #f8f9fa;
+            color: #11998e;
+            border: 2px solid #11998e;
+        }
+        
+        .prev-btn:hover:not(:disabled) {
+            background-color: #e8f5e9;
+        }
+        
+        .next-btn {
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            color: white;
+        }
+        
+        .next-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 126, 95, 0.3);
+        }
+        
+        .results-container {
+            padding: 40px;
+            text-align: center;
+            display: none;
+        }
+        
+        .results-header {
+            margin-bottom: 30px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+        }
+        
+        .score-percent {
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .score-text {
+            font-size: 18px;
+        }
+        
+        .results-details {
+            text-align: left;
+            margin-top: 30px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .result-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+        
+        .result-item.correct {
+            border-left: 5px solid #38ef7d;
+        }
+        
+        .result-item.incorrect {
+            border-left: 5px solid #ff7e5f;
+        }
+        
+        .restart-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(to right, #11998e, #38ef7d);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+        }
+        
+        @media (max-width: 600px) {
+            .quiz-header h1 {
+                font-size: 24px;
+            }
+            
+            .question-text {
+                font-size: 20px;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1>Endocrine System Quiz</h1>
+            <p>Test your knowledge of glands, hormones, and their mechanisms of action</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="question-counter">
+            Question <span id="current-question">1</span> of 15
+        </div>
+        
+        <div class="question-container" id="question-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="navigation-buttons">
+            <button class="nav-btn prev-btn" id="prev-btn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                Previous
+            </button>
+            <button class="nav-btn next-btn" id="next-btn">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="results-container" id="results-container">
+            <div class="results-header">
+                <h2>Quiz Results</h2>
+            </div>
+            <div class="score-circle">
+                <div class="score-percent" id="score-percent">0%</div>
+                <div class="score-text" id="score-text">Score</div>
+            </div>
+            <div class="results-details" id="results-details">
+                <!-- Results will be inserted here by JavaScript -->
+            </div>
+            <button class="restart-btn" id="restart-btn">Take Quiz Again</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz questions and answers
+            const quizData = [
+                {
+                    question: "Which of the following is NOT considered an endocrine gland?",
+                    options: ["Hypothalamus", "Pituitary gland", "Thyroid gland", "Pineal gland"],
+                    correct: 0
+                },
+                {
+                    question: "Which hormones are stored and released by the posterior pituitary?",
+                    options: ["Oxytocin and ADH", "Growth hormone and prolactin", "TSH and ACTH", "FSH and LH"],
+                    correct: 0
+                },
+                {
+                    question: "Which hormone is responsible for stimulating uterine contractions and milk ejection?",
+                    options: ["Prolactin", "Oxytocin", "Antidiuretic hormone", "Growth hormone"],
+                    correct: 1
+                },
+                {
+                    question: "What condition results from hyposecretion of ADH?",
+                    options: ["Gigantism", "Diabetes insipidus", "Cushing's disease", "Acromegaly"],
+                    correct: 1
+                },
+                {
+                    question: "Which anterior pituitary hormone stimulates the thyroid gland to release thyroid hormones?",
+                    options: ["ACTH", "TSH", "FSH", "LH"],
+                    correct: 1
+                },
+                {
+                    question: "Which hormone is produced by the pineal gland and regulates sleep-wake cycles?",
+                    options: ["Melatonin", "Serotonin", "Dopamine", "Insulin"],
+                    correct: 0
+                },
+                {
+                    question: "Which of the following hormones is involved in calcium metabolism?",
+                    options: ["Thyroxine", "Calcitonin", "Cortisol", "Aldosterone"],
+                    correct: 1
+                },
+                {
+                    question: "What is the primary function of parathyroid hormone (PTH)?",
+                    options: ["Lower blood calcium levels", "Raise blood calcium levels", "Regulate sodium levels", "Control metabolic rate"],
+                    correct: 1
+                },
+                {
+                    question: "Which gland produces hormones that stimulate T-cell development?",
+                    options: ["Thyroid", "Thymus", "Adrenal", "Pancreas"],
+                    correct: 1
+                },
+                {
+                    question: "Which hormone is produced by the adrenal medulla?",
+                    options: ["Cortisol", "Aldosterone", "Epinephrine", "Androgens"],
+                    correct: 2
+                },
+                {
+                    question: "Which pancreatic hormone lowers blood glucose levels?",
+                    options: ["Glucagon", "Insulin", "Somatostatin", "Pancreatic polypeptide"],
+                    correct: 1
+                },
+                {
+                    question: "Which type of hormone stimulus involves altered levels of certain ions or nutrients?",
+                    options: ["Neural stimulus", "Hormonal stimulus", "Humoral stimulus", "Direct stimulus"],
+                    correct: 2
+                },
+                {
+                    question: "How do steroid hormones typically exert their effects on target cells?",
+                    options: ["By binding to membrane receptors and activating cAMP", "By diffusing through the membrane and activating genes", "By opening ion channels in the membrane", "By activating enzyme systems directly"],
+                    correct: 1
+                },
+                {
+                    question: "Which of the following is a characteristic of water-soluble hormones?",
+                    options: ["They bind to plasma proteins for transport", "They have long half-lives in the blood", "They act through second-messenger systems", "They activate genes to synthesize new proteins"],
+                    correct: 2
+                },
+                {
+                    question: "Which hormone is responsible for the development of secondary male sex characteristics?",
+                    options: ["Estrogen", "Progesterone", "Testosterone", "Prolactin"],
+                    correct: 2
+                }
+            ];
+
+            // DOM elements
+            const questionContainer = document.getElementById('question-container');
+            const progressBar = document.getElementById('progress-bar');
+            const currentQuestionEl = document.getElementById('current-question');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const resultsContainer = document.getElementById('results-container');
+            const scorePercent = document.getElementById('score-percent');
+            const scoreText = document.getElementById('score-text');
+            const resultsDetails = document.getElementById('results-details');
+            const restartBtn = document.getElementById('restart-btn');
+
+            // Quiz state
+            let currentQuestion = 0;
+            let userAnswers = new Array(quizData.length).fill(null);
+            let quizCompleted = false;
+
+            // Initialize quiz
+            function initQuiz() {
+                showQuestion(currentQuestion);
+                updateProgressBar();
+                updateNavigationButtons();
+            }
+
+            // Display current question
+            function showQuestion(index) {
+                const question = quizData[index];
+                currentQuestionEl.textContent = index + 1;
+                
+                let optionsHTML = '';
+                question.options.forEach((option, i) => {
+                    const isSelected = userAnswers[index] === i;
+                    optionsHTML += `
+                        <div class="option ${isSelected ? 'selected' : ''}" data-index="${i}">
+                            <input type="radio" id="option-${i}" name="option" ${isSelected ? 'checked' : ''}>
+                            <label for="option-${i}">${option}</label>
+                        </div>
+                    `;
+                });
+                
+                questionContainer.innerHTML = `
+                    <div class="question-text">${question.question}</div>
+                    <div class="options-container">
+                        ${optionsHTML}
+                    </div>
+                `;
+                
+                // Add event listeners to options
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        const selectedIndex = parseInt(this.getAttribute('data-index'));
+                        userAnswers[currentQuestion] = selectedIndex;
+                        
+                        // Update UI
+                        document.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        document.querySelector(`#option-${selectedIndex}`).checked = true;
+                        
+                        updateNavigationButtons();
+                    });
+                });
+            }
+
+            // Update progress bar
+            function updateProgressBar() {
+                const progress = ((currentQuestion + 1) / quizData.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // Update navigation buttons state
+            function updateNavigationButtons() {
+                prevBtn.disabled = currentQuestion === 0;
+                
+                if (currentQuestion === quizData.length - 1) {
+                    nextBtn.textContent = 'Submit';
+                    nextBtn.classList.add('submit-btn');
+                    nextBtn.classList.remove('next-btn');
+                } else {
+                    nextBtn.textContent = 'Next';
+                    nextBtn.classList.add('next-btn');
+                    nextBtn.classList.remove('submit-btn');
+                }
+                
+                // Enable next button if current question is answered
+                if (userAnswers[currentQuestion] !== null) {
+                    nextBtn.disabled = false;
+                } else {
+                    nextBtn.disabled = true;
+                }
+            }
+
+            // Navigate to next question
+            function nextQuestion() {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgressBar();
+                    updateNavigationButtons();
+                } else {
+                    // Submit quiz
+                    submitQuiz();
+                }
+            }
+
+            // Navigate to previous question
+            function prevQuestion() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgressBar();
+                    updateNavigationButtons();
+                }
+            }
+
+            // Calculate and display results
+            function submitQuiz() {
+                let score = 0;
+                let resultsHTML = '';
+                
+                quizData.forEach((question, index) => {
+                    const userAnswer = userAnswers[index];
+                    const isCorrect = userAnswer === question.correct;
+                    
+                    if (isCorrect) {
+                        score++;
+                    }
+                    
+                    resultsHTML += `
+                        <div class="result-item ${isCorrect ? 'correct' : 'incorrect'}">
+                            <strong>Question ${index + 1}:</strong> ${question.question}<br>
+                            <strong>Your answer:</strong> ${userAnswer !== null ? question.options[userAnswer] : 'Not answered'}<br>
+                            <strong>Correct answer:</strong> ${question.options[question.correct]}
+                        </div>
+                    `;
+                });
+                
+                const percentage = Math.round((score / quizData.length) * 100);
+                scorePercent.textContent = `${percentage}%`;
+                scoreText.textContent = `${score}/${quizData.length} Correct`;
+                resultsDetails.innerHTML = resultsHTML;
+                
+                // Show results container
+                document.querySelector('.question-counter').style.display = 'none';
+                document.querySelector('.question-container').style.display = 'none';
+                document.querySelector('.navigation-buttons').style.display = 'none';
+                resultsContainer.style.display = 'block';
+                
+                quizCompleted = true;
+            }
+
+            // Restart quiz
+            function restartQuiz() {
+                currentQuestion = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                quizCompleted = false;
+                
+                // Reset UI
+                document.querySelector('.question-counter').style.display = 'block';
+                document.querySelector('.question-container').style.display = 'block';
+                document.querySelector('.navigation-buttons').style.display = 'flex';
+                resultsContainer.style.display = 'none';
+                
+                initQuiz();
+            }
+
+            // Event listeners
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            restartBtn.addEventListener('click', restartQuiz);
+
+            // Initialize the quiz
+            initQuiz();
+        });
+    </script>
+</body>
+</html>

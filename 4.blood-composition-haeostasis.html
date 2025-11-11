@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Composition and Haemostasis Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #8b0000, #c00000);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .instructions h3 {
+            color: #8b0000;
+            margin-bottom: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .progress-container {
+            padding: 15px 20px;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #8b0000, #c00000);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .quiz-content {
+            padding: 25px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question-number {
+            font-size: 14px;
+            color: #8b0000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #f5f5f5;
+            border-color: #c0c0c0;
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+        
+        .option-label {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-label {
+            background-color: #2196f3;
+            color: white;
+        }
+        
+        .option.correct .option-label {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .option.incorrect .option-label {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-prev {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-next {
+            background-color: #8b0000;
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            background-color: #a00000;
+        }
+        
+        .btn-submit {
+            background-color: #2e7d32;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #1b5e20;
+        }
+        
+        .results {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 72px;
+            font-weight: bold;
+            color: #8b0000;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .results-message {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .restart-btn {
+            background-color: #8b0000;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .restart-btn:hover {
+            background-color: #a00000;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .quiz-content {
+                padding: 15px;
+            }
+            
+            .question-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Blood Composition & Haemostasis Quiz</h1>
+            <p class="subtitle">Test your knowledge of blood components and clotting processes</p>
+        </header>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>• This quiz contains 15 multiple-choice questions about blood composition and haemostasis.</p>
+            <p>• Select one answer for each question and use the navigation buttons to move between questions.</p>
+            <p>• After completing all questions, click "Submit Quiz" to see your results.</p>
+        </div>
+        
+        <div class="progress-container">
+            <span id="progress-text">Question 1 of 15</span>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span id="score-text">Score: 0/15</span>
+        </div>
+        
+        <div class="quiz-content">
+            <!-- Question 1 -->
+            <div class="question active" id="q1">
+                <div class="question-number">Question 1 of 15</div>
+                <div class="question-text">What percentage of whole blood is typically composed of plasma?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">35%</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">45%</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">55%</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">65%</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q1">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Plasma typically makes up about 55% of whole blood, with formed elements (mainly erythrocytes) making up the remaining 45%.</div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question" id="q2">
+                <div class="question-number">Question 2 of 15</div>
+                <div class="question-text">Which of the following is NOT a function of blood?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Distribution of oxygen and nutrients</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Regulation of pH and temperature</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Production of digestive enzymes</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Protection through clotting and immunity</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q2">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">While blood performs distribution, regulation, and protection functions, it does not produce digestive enzymes - that is the role of the digestive system.</div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question" id="q3">
+                <div class="question-number">Question 3 of 15</div>
+                <div class="question-text">Which plasma protein is the main contributor to osmotic pressure?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Globulins</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Fibrinogen</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Albumin</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Prothrombin</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q3">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Albumin constitutes about 60% of plasma proteins and is the main contributor to osmotic pressure, helping maintain water balance between blood and tissues.</div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question" id="q4">
+                <div class="question-number">Question 4 of 15</div>
+                <div class="question-text">What is the primary function of erythrocytes?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Immune defense</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Blood clotting</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Gas transport</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Inflammation mediation</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q4">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Erythrocytes (red blood cells) are specialized for gas transport, primarily carrying oxygen from the lungs to tissues and carbon dioxide from tissues to the lungs.</div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question" id="q5">
+                <div class="question-number">Question 5 of 15</div>
+                <div class="question-text">Which leukocyte is primarily responsible for phagocytizing bacteria?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Eosinophil</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Basophil</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Neutrophil</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Lymphocyte</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q5">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Neutrophils are the most abundant white blood cells and are primarily responsible for phagocytizing bacteria as part of the innate immune response.</div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question" id="q6">
+                <div class="question-number">Question 6 of 15</div>
+                <div class="question-text">What hormone stimulates red blood cell production?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Insulin</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Erythropoietin</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Thyroxine</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Adrenaline</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q6">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Erythropoietin is a hormone produced mainly by the kidneys that stimulates red bone marrow to produce more red blood cells in response to low oxygen levels.</div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question" id="q7">
+                <div class="question-number">Question 7 of 15</div>
+                <div class="question-text">Which vitamin is essential for stem cell division in erythropoiesis?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Vitamin A</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Vitamin C</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Vitamin B12</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Vitamin D</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q7">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Vitamin B12 is essential for stem cell division during erythropoiesis. A deficiency can lead to impaired red blood cell production and anemia.</div>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question" id="q8">
+                <div class="question-number">Question 8 of 15</div>
+                <div class="question-text">What is the correct order of the three stages of haemostasis?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Platelet phase → Vascular phase → Coagulation phase</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Coagulation phase → Vascular phase → Platelet phase</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Vascular phase → Platelet phase → Coagulation phase</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Platelet phase → Coagulation phase → Vascular phase</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q8">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The correct order of haemostasis is: 1) Vascular phase (vasoconstriction), 2) Platelet phase (platelet plug formation), 3) Coagulation phase (fibrin clot formation).</div>
+                </div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question" id="q9">
+                <div class="question-number">Question 9 of 15</div>
+                <div class="question-text">During the platelet phase of haemostasis, what do platelets stick to?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Only to other platelets</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Sticky endothelial surfaces and exposed collagen fibers</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Only to red blood cells</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Only to white blood cells</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q9">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">During the platelet phase, platelets adhere to sticky endothelial surfaces and exposed collagen fibers at the site of injury, then aggregate to form a platelet plug.</div>
+                </div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question" id="q10">
+                <div class="question-number">Question 10 of 15</div>
+                <div class="question-text">What is formed during the coagulation phase that traps blood cells and seals the injury?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Platelet plug</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Fibrin network</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Vascular spasm</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Collagen fibers</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q10">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">During the coagulation phase, fibrinogen is converted to fibrin, which forms a mesh network that traps blood cells and platelets, forming a stable clot that seals the injury.</div>
+                </div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="question" id="q11">
+                <div class="question-number">Question 11 of 15</div>
+                <div class="question-text">Which of the following is NOT a characteristic of mature erythrocytes?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">They lack a nucleus</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">They have organelles for protein synthesis</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">They are rich in hemoglobin</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">They have a biconcave shape</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q11">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Mature erythrocytes lack a nucleus and organelles, which allows more space for hemoglobin and increases their oxygen-carrying capacity.</div>
+                </div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="question" id="q12">
+                <div class="question-number">Question 12 of 15</div>
+                <div class="question-text">Which leukocyte releases histamine and other mediators of inflammation?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Neutrophil</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Eosinophil</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Basophil</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Monocyte</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q12">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Basophils release histamine and other mediators of inflammation. They also contain heparin, an anticoagulant.</div>
+                </div>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="question" id="q13">
+                <div class="question-number">Question 13 of 15</div>
+                <div class="question-text">What is the primary stimulus for the release of erythropoietin?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">High blood pressure</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Low blood glucose</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Hypoxia (low blood oxygen)</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Infection</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q13">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Hypoxia (low blood oxygen levels) is the primary stimulus for erythropoietin release, which then stimulates red bone marrow to produce more red blood cells.</div>
+                </div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question" id="q14">
+                <div class="question-number">Question 14 of 15</div>
+                <div class="question-text">Which of the following is a key event during the vascular phase of haemostasis?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Formation of fibrin network</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Platelet aggregation</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Vasoconstriction</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Conversion of prothrombin to thrombin</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q14">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">During the vascular phase, vasoconstriction occurs, which reduces blood flow to the injured area and helps minimize blood loss.</div>
+                </div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question" id="q15">
+                <div class="question-number">Question 15 of 15</div>
+                <div class="question-text">What is the approximate lifespan of a typical erythrocyte?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">7-10 days</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">30-60 days</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">100-120 days</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">1 year</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q15">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Erythrocytes have a lifespan of approximately 100-120 days, after which they are removed from circulation and broken down, primarily in the spleen.</div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn-prev" id="prev-btn" disabled>Previous</button>
+                <button class="btn-next" id="next-btn">Next Question</button>
+                <button class="btn-submit" id="submit-btn" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/15</div>
+            <div class="score-text" id="score-text-message">Your Score</div>
+            <div class="results-message" id="results-message">
+                <!-- Results message will be inserted here -->
+            </div>
+            <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz configuration
+            const totalQuestions = 15;
+            let currentQuestion = 1;
+            let userAnswers = {};
+            let score = 0;
+            
+            // Correct answers
+            const correctAnswers = {
+                q1: 'c',
+                q2: 'c',
+                q3: 'c',
+                q4: 'c',
+                q5: 'c',
+                q6: 'b',
+                q7: 'c',
+                q8: 'c',
+                q9: 'b',
+                q10: 'b',
+                q11: 'b',
+                q12: 'c',
+                q13: 'c',
+                q14: 'c',
+                q15: 'c'
+            };
+            
+            // DOM elements
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress');
+            const scoreText = document.getElementById('score-text');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultsDiv = document.getElementById('results');
+            const finalScore = document.getElementById('final-score');
+            const resultsMessage = document.getElementById('results-message');
+            const scoreTextMessage = document.getElementById('score-text-message');
+            
+            // Initialize quiz
+            updateProgress();
+            
+            // Option selection
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const question = this.closest('.question');
+                    const questionId = question.id;
+                    const selectedValue = this.getAttribute('data-value');
+                    
+                    // Remove selected class from all options in this question
+                    question.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store user's answer
+                    userAnswers[questionId] = selectedValue;
+                    
+                    // Hide any previous feedback
+                    const feedback = question.querySelector('.feedback');
+                    feedback.style.display = 'none';
+                    
+                    // Enable navigation if on last question
+                    if (currentQuestion === totalQuestions) {
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 1) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Submit button
+            submitBtn.addEventListener('click', function() {
+                calculateScore();
+                showResults();
+            });
+            
+            // Restart button
+            restartBtn.addEventListener('click', function() {
+                resetQuiz();
+            });
+            
+            // Function to show a specific question
+            function showQuestion(questionNum) {
+                // Hide all questions
+                document.querySelectorAll('.question').forEach(question => {
+                    question.classList.remove('active');
+                });
+                
+                // Show the current question
+                document.getElementById(`q${questionNum}`).classList.add('active');
+                
+                // Update button states
+                prevBtn.disabled = (questionNum === 1);
+                
+                if (questionNum === totalQuestions) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                    submitBtn.disabled = !userAnswers[`q${questionNum}`];
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+            }
+            
+            // Function to update progress
+            function updateProgress() {
+                const progressPercent = (currentQuestion / totalQuestions) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                progressText.textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+                
+                // Calculate current score based on answered questions
+                let currentScore = 0;
+                for (let i = 1; i <= currentQuestion; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        currentScore++;
+                    }
+                }
+                scoreText.textContent = `Score: ${currentScore}/${currentQuestion}`;
+            }
+            
+            // Function to calculate final score
+            function calculateScore() {
+                score = 0;
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        score++;
+                    }
+                }
+            }
+            
+            // Function to show results
+            function showResults() {
+                document.querySelector('.quiz-content').style.display = 'none';
+                resultsDiv.style.display = 'block';
+                
+                finalScore.textContent = `${score}/${totalQuestions}`;
+                
+                // Set results message based on score
+                let message = '';
+                if (score === totalQuestions) {
+                    message = '<p>Excellent! You have a perfect understanding of blood composition and haemostasis.</p>';
+                    scoreTextMessage.textContent = 'Perfect Score!';
+                } else if (score >= totalQuestions * 0.8) {
+                    message = '<p>Great job! You have a strong understanding of the material.</p>';
+                    scoreTextMessage.textContent = 'Great Score!';
+                } else if (score >= totalQuestions * 0.6) {
+                    message = '<p>Good effort! You have a decent understanding but could benefit from reviewing some concepts.</p>';
+                    scoreTextMessage.textContent = 'Good Score';
+                } else {
+                    message = '<p>You may need to review the material more thoroughly to improve your understanding.</p>';
+                    scoreTextMessage.textContent = 'Keep Studying';
+                }
+                
+                // Add performance details
+                message += `<p>You answered ${score} out of ${totalQuestions} questions correctly.</p>`;
+                
+                // Add review suggestions for incorrect answers
+                const incorrectQuestions = [];
+                for (let i = 1; i <= totalQuestions; i++) {
+                    if (userAnswers[`q${i}`] !== correctAnswers[`q${i}`]) {
+                        incorrectQuestions.push(i);
+                    }
+                }
+                
+                if (incorrectQuestions.length > 0) {
+                    message += `<p>Consider reviewing questions: ${incorrectQuestions.join(', ')}</p>`;
+                }
+                
+                resultsMessage.innerHTML = message;
+            }
+            
+            // Function to reset the quiz
+            function resetQuiz() {
+                currentQuestion = 1;
+                userAnswers = {};
+                score = 0;
+                
+                // Reset UI
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                document.querySelectorAll('.feedback').forEach(feedback => {
+                    feedback.style.display = 'none';
+                });
+                
+                document.querySelector('.quiz-content').style.display = 'block';
+                resultsDiv.style.display = 'none';
+                
+                showQuestion(1);
+                updateProgress();
+            }
+        });
+    </script>
+</body>
+</html>

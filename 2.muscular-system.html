@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muscular System Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .quiz-content {
+            padding: 30px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateX(5px);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 1em;
+            color: #4a5568;
+        }
+
+        .option.correct {
+            background: #c6f6d5;
+            border-color: #38a169;
+        }
+
+        .option.incorrect {
+            background: #fed7d7;
+            border-color: #e53e3e;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results {
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .score-text {
+            font-size: 1.3em;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .reset-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #38a169;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .feedback.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .quiz-content {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏋️ Muscular System Quiz</h1>
+            <p>Test your knowledge on Muscle Structure & Contraction</p>
+        </div>
+
+        <div class="quiz-content">
+            <form id="quizForm">
+                <!-- Question 1 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 1</span>
+                    </div>
+                    <div class="question-text">
+                        What are the four main functions of muscles?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="a">
+                            <label for="q1a">Movement, Posture, Stabilization, Heat generation</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="b">
+                            <label for="q1b">Movement, Circulation, Digestion, Protection</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="c">
+                            <label for="q1c">Contraction, Relaxation, Extension, Flexion</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="d">
+                            <label for="q1d">Support, Movement, Storage, Secretion</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="1"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 2</span>
+                    </div>
+                    <div class="question-text">
+                        Which connective tissue layer surrounds the entire muscle?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="a">
+                            <label for="q2a">Perimysium</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="b">
+                            <label for="q2b">Endomysium</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="c">
+                            <label for="q2c">Epimysium</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="d">
+                            <label for="q2d">Sarcolemma</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="2"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 3</span>
+                    </div>
+                    <div class="question-text">
+                        What is the contractile unit of a muscle called?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3a" value="a">
+                            <label for="q3a">Myofibril</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3b" value="b">
+                            <label for="q3b">Sarcomere</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3c" value="c">
+                            <label for="q3c">Fascicle</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3d" value="d">
+                            <label for="q3d">Muscle fiber</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="3"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 4</span>
+                    </div>
+                    <div class="question-text">
+                        Which protein blocks the binding sites on actin when calcium levels are low?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="a">
+                            <label for="q4a">Myosin</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="b">
+                            <label for="q4b">Troponin</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="c">
+                            <label for="q4c">Tropomyosin</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="d">
+                            <label for="q4d">Titin</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="4"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 5</span>
+                    </div>
+                    <div class="question-text">
+                        What neurotransmitter is released at the neuromuscular junction?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="a">
+                            <label for="q5a">Dopamine</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="b">
+                            <label for="q5b">Serotonin</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="c">
+                            <label for="q5c">Acetylcholine (ACh)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="d">
+                            <label for="q5d">Norepinephrine</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="5"></div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 6</span>
+                    </div>
+                    <div class="question-text">
+                        Where is calcium stored in muscle cells?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6a" value="a">
+                            <label for="q6a">Mitochondria</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6b" value="b">
+                            <label for="q6b">Sarcoplasmic Reticulum</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6c" value="c">
+                            <label for="q6c">Nucleus</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6d" value="d">
+                            <label for="q6d">T-tubules</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="6"></div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 7</span>
+                    </div>
+                    <div class="question-text">
+                        What are the four steps of the Sliding Filament Model in order?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7a" value="a">
+                            <label for="q7a">Cross-Bridge Attachment → Power Stroke → Cross-Bridge Detachment → Cocking of Myosin</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7b" value="b">
+                            <label for="q7b">Power Stroke → Cross-Bridge Attachment → Cocking of Myosin → Cross-Bridge Detachment</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7c" value="c">
+                            <label for="q7c">Cocking of Myosin → Cross-Bridge Attachment → Power Stroke → Cross-Bridge Detachment</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7d" value="d">
+                            <label for="q7d">Cross-Bridge Detachment → Cocking of Myosin → Cross-Bridge Attachment → Power Stroke</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="7"></div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 8</span>
+                    </div>
+                    <div class="question-text">
+                        In a third-class lever system, where is the effort applied?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8a" value="a">
+                            <label for="q8a">Between the fulcrum and load</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8b" value="b">
+                            <label for="q8b">Opposite to the load, with fulcrum in between</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8c" value="c">
+                            <label for="q8c">At the fulcrum point</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8d" value="d">
+                            <label for="q8d">At the same point as the load</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="8"></div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 9</span>
+                    </div>
+                    <div class="question-text">
+                        Which sarcomere region contains only thick filaments with no overlap?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9a" value="a">
+                            <label for="q9a">I Band</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9b" value="b">
+                            <label for="q9b">A Band</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9c" value="c">
+                            <label for="q9c">H Zone</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9d" value="d">
+                            <label for="q9d">Z Disc</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="9"></div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 10</span>
+                    </div>
+                    <div class="question-text">
+                        What type of muscle provides the major force for a specific movement?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10a" value="a">
+                            <label for="q10a">Synergist</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10b" value="b">
+                            <label for="q10b">Antagonist</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10c" value="c">
+                            <label for="q10c">Prime mover</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10d" value="d">
+                            <label for="q10d">Fixator</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="10"></div>
+                </div>
+
+                <!-- Question 11 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 11</span>
+                    </div>
+                    <div class="question-text">
+                        Which muscle characteristic refers to the ability to receive and respond to a stimulus?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11a" value="a">
+                            <label for="q11a">Contractility</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11b" value="b">
+                            <label for="q11b">Excitability</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11c" value="c">
+                            <label for="q11c">Extensibility</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11d" value="d">
+                            <label for="q11d">Elasticity</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="11"></div>
+                </div>
+
+                <!-- Question 12 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 12</span>
+                    </div>
+                    <div class="question-text">
+                        What is the role of T-tubules in muscle contraction?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12a" value="a">
+                            <label for="q12a">Store calcium ions</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12b" value="b">
+                            <label for="q12b">Transfer stimulus into muscle depths</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12c" value="c">
+                            <label for="q12c">Produce ATP for energy</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12d" value="d">
+                            <label for="q12d">Connect muscles to bones</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="12"></div>
+                </div>
+
+                <!-- Question 13 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 13</span>
+                    </div>
+                    <div class="question-text">
+                        Which fibre arrangement is characterized by short fibres with many fibres per unit area?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13a" value="a">
+                            <label for="q13a">Parallel (Fusiform)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13b" value="b">
+                            <label for="q13b">Convergent</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13c" value="c">
+                            <label for="q13c">Pennate (Pinnate)</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13d" value="d">
+                            <label for="q13d">Circular</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="13"></div>
+                </div>
+
+                <!-- Question 14 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 14</span>
+                    </div>
+                    <div class="question-text">
+                        What happens when calcium binds to troponin during muscle contraction?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14a" value="a">
+                            <label for="q14a">It causes the muscle to relax</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14b" value="b">
+                            <label for="q14b">It causes a shape change that moves tropomyosin away from binding sites</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14c" value="c">
+                            <label for="q14c">It breaks down ATP</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14d" value="d">
+                            <label for="q14d">It prevents myosin from binding to actin</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="14"></div>
+                </div>
+
+                <!-- Question 15 -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-number">Question 15</span>
+                    </div>
+                    <div class="question-text">
+                        What is the function of the Z disc in a sarcomere?
+                    </div>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15a" value="a">
+                            <label for="q15a">Holds adjacent thick filaments together</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15b" value="b">
+                            <label for="q15b">Contains only thick filaments</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15c" value="c">
+                            <label for="q15c">Joins thin filaments and marks the boundaries between sarcomeres</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15d" value="d">
+                            <label for="q15d">Provides strength and recoil</label>
+                        </div>
+                    </div>
+                    <div class="feedback" data-question="15"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Quiz</button>
+            </form>
+
+            <div class="results" id="results">
+                <div class="score" id="score"></div>
+                <div class="score-text" id="scoreText"></div>
+                <button class="reset-btn" onclick="resetQuiz()">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const answers = {
+            q1: 'a',
+            q2: 'c',
+            q3: 'b',
+            q4: 'c',
+            q5: 'c',
+            q6: 'b',
+            q7: 'a',
+            q8: 'a',
+            q9: 'c',
+            q10: 'c',
+            q11: 'b',
+            q12: 'b',
+            q13: 'c',
+            q14: 'b',
+            q15: 'c'
+        };
+
+        const explanations = {
+            q1: 'The four main functions of muscles are: Movement (internal and external), Posture (continually adjusting against gravity), Stabilization (pulling on bones to stabilize joints), and Heat generation (with contraction).',
+            q2: 'Epimysium is the outer layer of connective tissue that surrounds the entire muscle.',
+            q3: 'The sarcomere is the contractile unit of a muscle, defined by the region between two Z discs.',
+            q4: 'Tropomyosin blocks the binding sites on actin when calcium levels are low, preventing muscle contraction.',
+            q5: 'Acetylcholine (ACh) is the neurotransmitter released at the neuromuscular junction to stimulate muscle contraction.',
+            q6: 'The Sarcoplasmic Reticulum (SR) is a network surrounding each myofilament that stores calcium for muscle contraction.',
+            q7: 'The Sliding Filament Model follows these steps: 1) Cross-Bridge Attachment (actin and myosin bind), 2) Power Stroke (myosin pivots and pulls actin), 3) Cross-Bridge Detachment (actin and myosin separate), 4) Cocking of Myosin (myosin head resumes initial position).',
+            q8: 'In a third-class lever, the effort is applied between the fulcrum and the load. The load and fulcrum are opposite with effort in between.',
+            q9: 'The H Zone is the region where thick and thin filaments do not overlap, containing only thick filaments.',
+            q10: 'The prime mover (or agonist) is the muscle that provides the major force for a specific movement.',
+            q11: 'Excitability is the muscle characteristic that refers to the ability to receive and respond to a stimulus.',
+            q12: 'T-tubules are elongated tubes that penetrate each muscle fibre to transfer the stimulus into the muscle depths, allowing for coordinated contraction.',
+            q13: 'Pennate (Pinnate) fibre arrangement is characterized by short fibres with many fibres per unit area, providing greater strength.',
+            q14: 'When calcium binds to troponin, it causes a shape change that moves tropomyosin away from the binding sites on actin, allowing myosin to bind.',
+            q15: 'The Z disc joins thin filaments together and marks the boundaries between adjacent sarcomeres, defining the contractile unit.'
+        };
+
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            let totalQuestions = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selectedAnswer = document.querySelector(`input[name="${question}"]:checked`);
+                const questionCard = document.querySelector(`input[name="${question}"]`).closest('.question-card');
+                const options = questionCard.querySelectorAll('.option');
+                const feedback = questionCard.querySelector('.feedback');
+                
+                if (selectedAnswer) {
+                    const userAnswer = selectedAnswer.value;
+                    const correctAnswer = answers[question];
+                    
+                    options.forEach(option => {
+                        const radio = option.querySelector('input[type="radio"]');
+                        if (radio.value === correctAnswer) {
+                            option.classList.add('correct');
+                        }
+                        if (radio.checked && radio.value !== correctAnswer) {
+                            option.classList.add('incorrect');
+                        }
+                    });
+                    
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        feedback.className = 'feedback show correct';
+                        feedback.textContent = '✓ Correct! ' + explanations[question];
+                    } else {
+                        feedback.className = 'feedback show incorrect';
+                        feedback.textContent = '✗ Incorrect. ' + explanations[question];
+                    }
+                } else {
+                    feedback.className = 'feedback show incorrect';
+                    feedback.textContent = '✗ No answer selected. ' + explanations[question];
+                    
+                    options.forEach(option => {
+                        const radio = option.querySelector('input[type="radio"]');
+                        if (radio.value === answers[question]) {
+                            option.classList.add('correct');
+                        }
+                    });
+                }
+            }
+            
+            const percentage = (score / totalQuestions) * 100;
+            document.getElementById('score').textContent = `${score}/${totalQuestions}`;
+            
+            let message = '';
+            if (percentage === 100) {
+                message = '🎉 Perfect Score! Excellent work!';
+            } else if (percentage >= 80) {
+                message = '🌟 Great job! You have a strong understanding!';
+            } else if (percentage >= 60) {
+                message = '👍 Good effort! Review the material to improve.';
+            } else {
+                message = '📚 Keep studying! Review the lecture materials.';
+            }
+            
+            document.getElementById('scoreText').textContent = message;
+            document.getElementById('results').classList.add('show');
+            
+            document.querySelector('.submit-btn').disabled = true;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('results').classList.remove('show');
+            document.querySelector('.submit-btn').disabled = false;
+            
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.classList.remove('show', 'correct', 'incorrect');
+                feedback.textContent = '';
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

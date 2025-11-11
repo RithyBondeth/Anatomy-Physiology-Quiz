@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular System Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(to right, #8b0000, #c00000);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .instructions h3 {
+            color: #8b0000;
+            margin-bottom: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .progress-container {
+            padding: 15px 20px;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            flex-grow: 1;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #8b0000, #c00000);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .quiz-content {
+            padding: 25px;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .question.active {
+            display: block;
+        }
+        
+        .question-number {
+            font-size: 14px;
+            color: #8b0000;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #f5f5f5;
+            border-color: #c0c0c0;
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+        
+        .option-label {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .option-label {
+            background-color: #2196f3;
+            color: white;
+        }
+        
+        .option.correct .option-label {
+            background-color: #4caf50;
+            color: white;
+        }
+        
+        .option.incorrect .option-label {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-prev {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background-color: #e0e0e0;
+        }
+        
+        .btn-next {
+            background-color: #8b0000;
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled) {
+            background-color: #a00000;
+        }
+        
+        .btn-submit {
+            background-color: #2e7d32;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background-color: #1b5e20;
+        }
+        
+        .results {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 72px;
+            font-weight: bold;
+            color: #8b0000;
+            margin: 20px 0;
+        }
+        
+        .score-text {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        
+        .results-message {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .restart-btn {
+            background-color: #8b0000;
+            color: white;
+            padding: 12px 30px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        
+        .restart-btn:hover {
+            background-color: #a00000;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .quiz-content {
+                padding: 15px;
+            }
+            
+            .question-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cardiovascular System Quiz</h1>
+            <p class="subtitle">Test your knowledge of heart anatomy, circulation, and blood vessels</p>
+        </header>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>• This quiz contains 15 multiple-choice questions about the cardiovascular system.</p>
+            <p>• Select one answer for each question and use the navigation buttons to move between questions.</p>
+            <p>• After completing all questions, click "Submit Quiz" to see your results.</p>
+        </div>
+        
+        <div class="progress-container">
+            <span id="progress-text">Question 1 of 15</span>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <span id="score-text">Score: 0/15</span>
+        </div>
+        
+        <div class="quiz-content">
+            <!-- Question 1 -->
+            <div class="question active" id="q1">
+                <div class="question-number">Question 1 of 15</div>
+                <div class="question-text">Which side of the heart carries oxygen-poor blood and serves the pulmonary circuit?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Left side</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Right side</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Both sides equally</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Neither side</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q1">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The right side of the heart carries oxygen-poor blood and serves the pulmonary circuit, which transports blood to and from the lungs for gas exchange.</div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question" id="q2">
+                <div class="question-number">Question 2 of 15</div>
+                <div class="question-text">What is the normal sequence of the cardiac conduction system?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">AV node → SA node → Purkinje fibers → AV bundle</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">SA node → AV node → AV bundle → Purkinje fibers</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Purkinje fibers → AV bundle → SA node → AV node</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">AV bundle → SA node → Purkinje fibers → AV node</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q2">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The correct sequence is: SA node (pacemaker) → AV node → AV bundle → bundle branches → Purkinje fibers. This pathway ensures coordinated contraction of the heart chambers.</div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question" id="q3">
+                <div class="question-number">Question 3 of 15</div>
+                <div class="question-text">Which layer of the heart wall is the chief contractile layer and forms the bulk of the heart?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Epicardium</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Myocardium</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Endocardium</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Pericardium</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q3">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The myocardium is composed mainly of cardiac muscle and is the chief contractile layer that forms the bulk of the heart. It is interlaced with elastin and collagen fibers.</div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question" id="q4">
+                <div class="question-number">Question 4 of 15</div>
+                <div class="question-text">Which of the following is NOT one of the three sources of resistance to blood flow?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Blood viscosity</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Vessel length</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Vessel diameter</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Blood temperature</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q4">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The three sources of resistance to blood flow are blood viscosity, vessel length, and vessel diameter. Blood temperature is not listed as one of the primary sources of resistance.</div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question" id="q5">
+                <div class="question-number">Question 5 of 15</div>
+                <div class="question-text">What is the function of the intercalated discs in cardiac muscle tissue?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Store calcium ions for contraction</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Produce ATP for muscle contraction</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Interlock membranes and assist in propagation of action potentials</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Protect the heart from overstretching</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q5">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Intercalated discs interlock cardiac muscle cell membranes and contain gap junctions that allow for rapid propagation of action potentials, enabling coordinated contraction of the heart.</div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question" id="q6">
+                <div class="question-number">Question 6 of 15</div>
+                <div class="question-text">Which valve prevents backflow of blood from the aorta into the left ventricle?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Tricuspid valve</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Mitral (bicuspid) valve</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Aortic semilunar valve</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Pulmonary semilunar valve</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q6">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The aortic semilunar valve prevents backflow of blood from the aorta into the left ventricle during ventricular relaxation.</div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question" id="q7">
+                <div class="question-number">Question 7 of 15</div>
+                <div class="question-text">Which type of blood vessel has the thinnest walls and directly serves cellular needs through exchange?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Arteries</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Arterioles</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Capillaries</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Veins</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q7">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Capillaries have the thinnest walls (composed of just endothelium and basement membrane) and directly serve cellular needs through exchange of gases, nutrients, and wastes.</div>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question" id="q8">
+                <div class="question-number">Question 8 of 15</div>
+                <div class="question-text">During which phase of the cardiac cycle do the atria contract while the ventricles relax?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Atrial diastole</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Ventricular systole</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Atrial systole</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Cardiac diastole</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q8">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">During atrial systole, the atria contract while the ventricles relax, allowing blood to flow from the atria into the ventricles.</div>
+                </div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question" id="q9">
+                <div class="question-number">Question 9 of 15</div>
+                <div class="question-text">What is the function of the serous fluid in the pericardial cavity?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Provide nutrients to the heart muscle</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Produce red blood cells</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Lubricate and reduce friction as the heart beats</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Store calcium ions for contraction</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q9">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The serous fluid in the pericardial cavity lubricates the heart and reduces friction as it beats within the pericardial sac.</div>
+                </div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question" id="q10">
+                <div class="question-number">Question 10 of 15</div>
+                <div class="question-text">Which of the following is a key difference between cardiac and skeletal muscle?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Cardiac muscle has gap junctions between cells, skeletal muscle does not</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Skeletal muscle has intercalated discs, cardiac muscle does not</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Cardiac muscle can undergo tetanus, skeletal muscle cannot</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Skeletal muscle has pacemaker cells, cardiac muscle does not</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q10">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Cardiac muscle has gap junctions between cells that create a functional syncytium, allowing coordinated contraction. Skeletal muscle lacks these gap junctions and contracts as individual motor units.</div>
+                </div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="question" id="q11">
+                <div class="question-number">Question 11 of 15</div>
+                <div class="question-text">Which type of capillary has oval pores in the endothelial cells and is more permeable to fluids and solutes?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Continuous capillaries</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Fenestrated capillaries</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Sinusoidal capillaries</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Arterial capillaries</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q11">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">Fenestrated capillaries have oval pores (fenestrations) in their endothelial cells, making them more permeable to fluids and solutes. They are found in organs like the kidneys and pituitary gland.</div>
+                </div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="question" id="q12">
+                <div class="question-number">Question 12 of 15</div>
+                <div class="question-text">What is the normal blood pressure reading in mmHg?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">100/60</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">120/80</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">140/90</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">160/100</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q12">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">A normal blood pressure reading is 120/80 mmHg, where 120 represents systolic pressure (during ventricular contraction) and 80 represents diastolic pressure (during ventricular relaxation).</div>
+                </div>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="question" id="q13">
+                <div class="question-number">Question 13 of 15</div>
+                <div class="question-text">Which layer of a blood vessel contains circularly arranged smooth muscle and is the thickest layer in arteries?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Tunica intima</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Tunica media</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Tunica externa</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Tunica adventitia</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q13">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The tunica media contains circularly arranged smooth muscle and elastic fibers. It is the thickest layer in arteries and is regulated by sympathetic nerve fibers for vasoconstriction and vasodilation.</div>
+                </div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question" id="q14">
+                <div class="question-number">Question 14 of 15</div>
+                <div class="question-text">What is the role of the chordae tendineae and papillary muscles in the heart?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Initiate the electrical impulse for contraction</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Prevent backflow of blood into the atria during ventricular contraction</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Produce serous fluid for lubrication</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Store calcium ions for muscle contraction</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q14">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The chordae tendineae and papillary muscles work together to prevent the AV valve flaps from everting into the atria during ventricular contraction, thus preventing backflow of blood.</div>
+                </div>
+            </div>
+            
+            <!-- Question 15 -->
+            <div class="question" id="q15">
+                <div class="question-number">Question 15 of 15</div>
+                <div class="question-text">Which of the following is responsible for the 'lub' sound in the heart sounds?</div>
+                <div class="options">
+                    <div class="option" data-value="a">
+                        <span class="option-label">A</span>
+                        <span class="option-text">Closing of the semilunar valves</span>
+                    </div>
+                    <div class="option" data-value="b">
+                        <span class="option-label">B</span>
+                        <span class="option-text">Closing of the atrioventricular valves</span>
+                    </div>
+                    <div class="option" data-value="c">
+                        <span class="option-label">C</span>
+                        <span class="option-text">Opening of the semilunar valves</span>
+                    </div>
+                    <div class="option" data-value="d">
+                        <span class="option-label">D</span>
+                        <span class="option-text">Opening of the atrioventricular valves</span>
+                    </div>
+                </div>
+                <div class="feedback" id="feedback-q15">
+                    <div class="feedback-title">Explanation</div>
+                    <div class="feedback-text">The 'lub' sound (S1) is caused by the closing of the atrioventricular valves (tricuspid and mitral) at the beginning of ventricular systole.</div>
+                </div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn-prev" id="prev-btn" disabled>Previous</button>
+                <button class="btn-next" id="next-btn">Next Question</button>
+                <button class="btn-submit" id="submit-btn" style="display: none;">Submit Quiz</button>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>Quiz Complete!</h2>
+            <div class="score" id="final-score">0/15</div>
+            <div class="score-text" id="score-text-message">Your Score</div>
+            <div class="results-message" id="results-message">
+                <!-- Results message will be inserted here -->
+            </div>
+            <button class="restart-btn" id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz configuration
+            const totalQuestions = 15;
+            let currentQuestion = 1;
+            let userAnswers = {};
+            let score = 0;
+            
+            // Correct answers
+            const correctAnswers = {
+                q1: 'b',
+                q2: 'b',
+                q3: 'b',
+                q4: 'd',
+                q5: 'c',
+                q6: 'c',
+                q7: 'c',
+                q8: 'c',
+                q9: 'c',
+                q10: 'a',
+                q11: 'b',
+                q12: 'b',
+                q13: 'b',
+                q14: 'b',
+                q15: 'b'
+            };
+            
+            // DOM elements
+            const progressText = document.getElementById('progress-text');
+            const progressBar = document.getElementById('progress');
+            const scoreText = document.getElementById('score-text');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultsDiv = document.getElementById('results');
+            const finalScore = document.getElementById('final-score');
+            const resultsMessage = document.getElementById('results-message');
+            const scoreTextMessage = document.getElementById('score-text-message');
+            
+            // Initialize quiz
+            updateProgress();
+            
+            // Option selection
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const question = this.closest('.question');
+                    const questionId = question.id;
+                    const selectedValue = this.getAttribute('data-value');
+                    
+                    // Remove selected class from all options in this question
+                    question.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Store user's answer
+                    userAnswers[questionId] = selectedValue;
+                    
+                    // Hide any previous feedback
+                    const feedback = question.querySelector('.feedback');
+                    feedback.style.display = 'none';
+                    
+                    // Enable navigation if on last question
+                    if (currentQuestion === totalQuestions) {
+                        submitBtn.disabled = false;
+                    }
+                });
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', function() {
+                if (currentQuestion > 1) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', function() {
+                if (currentQuestion < totalQuestions) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            });
+            
+            // Submit button
+            submitBtn.addEventListener('click', function() {
+                calculateScore();
+                showResults();
+            });
+            
+            // Restart button
+            restartBtn.addEventListener('click', function() {
+                resetQuiz();
+            });
+            
+            // Function to show a specific question
+            function showQuestion(questionNum) {
+                // Hide all questions
+                document.querySelectorAll('.question').forEach(question => {
+                    question.classList.remove('active');
+                });
+                
+                // Show the current question
+                document.getElementById(`q${questionNum}`).classList.add('active');
+                
+                // Update button states
+                prevBtn.disabled = (questionNum === 1);
+                
+                if (questionNum === totalQuestions) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                    submitBtn.disabled = !userAnswers[`q${questionNum}`];
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+            }
+            
+            // Function to update progress
+            function updateProgress() {
+                const progressPercent = (currentQuestion / totalQuestions) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                progressText.textContent = `Question ${currentQuestion} of ${totalQuestions}`;
+                
+                // Calculate current score based on answered questions
+                let currentScore = 0;
+                for (let i = 1; i <= currentQuestion; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        currentScore++;
+                    }
+                }
+                scoreText.textContent = `Score: ${currentScore}/${currentQuestion}`;
+            }
+            
+            // Function to calculate final score
+            function calculateScore() {
+                score = 0;
+                for (let i = 1; i <= totalQuestions; i++) {
+                    const questionId = `q${i}`;
+                    if (userAnswers[questionId] === correctAnswers[questionId]) {
+                        score++;
+                    }
+                }
+            }
+            
+            // Function to show results
+            function showResults() {
+                document.querySelector('.quiz-content').style.display = 'none';
+                resultsDiv.style.display = 'block';
+                
+                finalScore.textContent = `${score}/${totalQuestions}`;
+                
+                // Set results message based on score
+                let message = '';
+                if (score === totalQuestions) {
+                    message = '<p>Excellent! You have a perfect understanding of the cardiovascular system.</p>';
+                    scoreTextMessage.textContent = 'Perfect Score!';
+                } else if (score >= totalQuestions * 0.8) {
+                    message = '<p>Great job! You have a strong understanding of the cardiovascular system.</p>';
+                    scoreTextMessage.textContent = 'Great Score!';
+                } else if (score >= totalQuestions * 0.6) {
+                    message = '<p>Good effort! You have a decent understanding but could benefit from reviewing some concepts.</p>';
+                    scoreTextMessage.textContent = 'Good Score';
+                } else {
+                    message = '<p>You may need to review the material more thoroughly to improve your understanding of the cardiovascular system.</p>';
+                    scoreTextMessage.textContent = 'Keep Studying';
+                }
+                
+                // Add performance details
+                message += `<p>You answered ${score} out of ${totalQuestions} questions correctly.</p>`;
+                
+                // Add review suggestions for incorrect answers
+                const incorrectQuestions = [];
+                for (let i = 1; i <= totalQuestions; i++) {
+                    if (userAnswers[`q${i}`] !== correctAnswers[`q${i}`]) {
+                        incorrectQuestions.push(i);
+                    }
+                }
+                
+                if (incorrectQuestions.length > 0) {
+                    message += `<p>Consider reviewing questions: ${incorrectQuestions.join(', ')}</p>`;
+                }
+                
+                resultsMessage.innerHTML = message;
+            }
+            
+            // Function to reset the quiz
+            function resetQuiz() {
+                currentQuestion = 1;
+                userAnswers = {};
+                score = 0;
+                
+                // Reset UI
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                document.querySelectorAll('.feedback').forEach(feedback => {
+                    feedback.style.display = 'none';
+                });
+                
+                document.querySelector('.quiz-content').style.display = 'block';
+                resultsDiv.style.display = 'none';
+                
+                showQuestion(1);
+                updateProgress();
+            }
+        });
+    </script>
+</body>
+</html>
