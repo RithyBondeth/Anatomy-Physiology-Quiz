@@ -285,6 +285,12 @@
             background-color: #0052a3;
         }
         
+        .question-summary {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
         @media (max-width: 600px) {
             .container {
                 border-radius: 0;
@@ -318,7 +324,7 @@
         <div class="instructions">
             <h3>Instructions</h3>
             <p>• This quiz contains 15 multiple-choice questions about the urinary system.</p>
-            <p>• Select one answer for each question and use the navigation buttons to move between questions.</p>
+            <p>• Select one answer for each question and get immediate feedback.</p>
             <p>• After completing all questions, click "Submit Quiz" to see your results.</p>
         </div>
         
@@ -776,6 +782,7 @@
             let currentQuestion = 1;
             let userAnswers = {};
             let score = 0;
+            let showResultsImmediately = true; // Set to true to show feedback immediately
             
             // Correct answers
             const correctAnswers = {
@@ -830,14 +837,18 @@
                     // Store user's answer
                     userAnswers[questionId] = selectedValue;
                     
-                    // Hide any previous feedback
-                    const feedback = question.querySelector('.feedback');
-                    feedback.style.display = 'none';
+                    // Show immediate feedback if enabled
+                    if (showResultsImmediately) {
+                        showQuestionFeedback(questionId, selectedValue);
+                    }
                     
                     // Enable navigation if on last question
                     if (currentQuestion === totalQuestions) {
                         submitBtn.disabled = false;
                     }
+                    
+                    // Update score display
+                    updateProgress();
                 });
             });
             
@@ -869,6 +880,38 @@
             restartBtn.addEventListener('click', function() {
                 resetQuiz();
             });
+            
+            // Function to show question feedback
+            function showQuestionFeedback(questionId, selectedValue) {
+                const question = document.getElementById(questionId);
+                const correctAnswer = correctAnswers[questionId];
+                const feedback = question.querySelector('.feedback');
+                
+                // Remove previous feedback styling
+                question.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                });
+                
+                // Mark correct and incorrect answers
+                question.querySelectorAll('.option').forEach(option => {
+                    const optionValue = option.getAttribute('data-value');
+                    if (optionValue === correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (optionValue === selectedValue && selectedValue !== correctAnswer) {
+                        option.classList.add('incorrect');
+                    }
+                });
+                
+                // Show feedback message
+                feedback.style.display = 'block';
+                if (selectedValue === correctAnswer) {
+                    feedback.classList.remove('incorrect');
+                    feedback.classList.add('correct');
+                } else {
+                    feedback.classList.remove('correct');
+                    feedback.classList.add('incorrect');
+                }
+            }
             
             // Function to show a specific question
             function showQuestion(questionNum) {

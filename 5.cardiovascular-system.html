@@ -915,8 +915,34 @@
                 score = 0;
                 for (let i = 1; i <= totalQuestions; i++) {
                     const questionId = `q${i}`;
-                    if (userAnswers[questionId] === correctAnswers[questionId]) {
-                        score++;
+                    const questionElement = document.getElementById(questionId);
+                    const selectedOption = questionElement.querySelector('.option.selected');
+                    const correctValue = correctAnswers[questionId];
+                    const feedback = questionElement.querySelector('.feedback');
+                    
+                    if (selectedOption) {
+                        const selectedValue = selectedOption.getAttribute('data-value');
+                        
+                        // Clear previous styling
+                        questionElement.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('correct', 'incorrect');
+                        });
+                        
+                        // Add correct/incorrect styling
+                        if (selectedValue === correctValue) {
+                            score++;
+                            selectedOption.classList.add('correct');
+                            feedback.className = 'feedback correct';
+                        } else {
+                            selectedOption.classList.add('incorrect');
+                            // Highlight correct answer
+                            const correctOption = questionElement.querySelector(`.option[data-value="${correctValue}"]`);
+                            correctOption.classList.add('correct');
+                            feedback.className = 'feedback incorrect';
+                        }
+                        
+                        // Show feedback
+                        feedback.style.display = 'block';
                     }
                 }
             }
@@ -960,6 +986,13 @@
                 }
                 
                 resultsMessage.innerHTML = message;
+                
+                // Show all questions with feedback after submission
+                document.querySelectorAll('.question').forEach(question => {
+                    question.style.display = 'block';
+                });
+                document.querySelector('.quiz-content').style.display = 'block';
+                document.querySelector('.navigation').style.display = 'none';
             }
             
             // Function to reset the quiz
@@ -978,6 +1011,7 @@
                 });
                 
                 document.querySelector('.quiz-content').style.display = 'block';
+                document.querySelector('.navigation').style.display = 'flex';
                 resultsDiv.style.display = 'none';
                 
                 showQuestion(1);
